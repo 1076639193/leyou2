@@ -1,10 +1,8 @@
 package com.leyou.item.service;
 
 import com.leyou.item.mapper.*;
-import com.leyou.item.pojo.Sku;
-import com.leyou.item.pojo.SpuBo;
-import com.leyou.item.pojo.SpuDetail;
-import com.leyou.item.pojo.Stock;
+import com.leyou.item.pojo.*;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +28,8 @@ public class GoodsService {
     SpuMapper spuMapper;
     @Autowired
     SpuDetailMapper spuDetailsMapper;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
     @Transactional
     public void saveGoods(SpuBo spuBo){
         //添加spu表
@@ -50,6 +50,9 @@ public class GoodsService {
         //保存sku,把spubo中相同的属性给sku
         List<Sku> skus=spuBo.getSkus();
         saveSkus(spuBo,skus);
+
+        //发送消息
+        sendMessage(spuBo.getId(),"insert");
     }
 
     private void saveSkus(SpuBo spuBo,List<Sku> skus){
@@ -108,5 +111,24 @@ public class GoodsService {
 
         //循环添加sku
         saveSkus(spuBo, spuBo.getSkus());
+
+        //发送消息
+        sendMessage(spuBo.getId(),"update");
+    }
+
+    public Spu querySpuById(Long spuId) {
+        return this.spuMapper.selectByPrimaryKey(spuId);
+    }
+
+    //发送消息的方法
+    public void sendMessage(Long id,String type ){
+        this.amqpTemplate.convertAndSend("item."+type,id);
+        //item.insert routerkey
+        //147
+
+
+        //item.update routerkey
+        //148
+
     }
 }

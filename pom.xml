@@ -17,6 +17,15 @@
         <module>ly-common</module>
         <module>ly-upload</module>
         <module>ly-searchs</module>
+        <module>ly-goods-page</module>
+        <module>ly-user</module>
+        <module>ly-user/ly-user-interface</module>
+        <module>ly-user/ly-user-service</module>
+        <module>ly-auth-center</module>
+        <module>ly-auth-center/ly-auth-common</module>
+        <module>ly-auth-center/ly-auth-service</module>
+        <module>ly-cart</module>
+        <module>ly-order</module>
     </modules>
 
     <parent>

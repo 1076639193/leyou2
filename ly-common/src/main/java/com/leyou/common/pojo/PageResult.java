@@ -1,7 +1,9 @@
 package com.leyou.common.pojo;
 
-import java.util.List;
+import lombok.Data;
 
+import java.util.List;
+@Data
 public class PageResult<T> {
     private Long total;// 总条数
     private Long totalPage;// 总页数

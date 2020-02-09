@@ -21,11 +21,8 @@ public class SearchController {
         PageResult<Goods> result=searchService.search(searchRequest);
         if(null!=result&&result.getItems().size()>0){
             return ResponseEntity.ok(result);
-
-
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
     }
 
 }
